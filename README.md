@@ -11,6 +11,7 @@ Common CLI tools for Android arm64 devices — packaged as a Magisk module.
 | `busybox` | `/system/bin/busybox` | aarch64 build | wget + many other applets |
 | `jq` 1.8.1 | `/system/bin/jq` | [jqlang/jq](https://github.com/jqlang/jq) | JSON parsing |
 | `sendat` | `/system/bin/sendat` | UFI-TOOLS' [send_at.go](https://github.com/kanoqwq/UFI-TOOLS/blob/http-server-version/app/src/main/assets/shell/send_at.go) — UPX-packed static aarch64 | Send AT commands to the cellular modem |
+| `bash` 5.2.015 | `/system/bin/bash` | [robxu9/bash-static](https://github.com/robxu9/bash-static) (musl static) | Modern shell with associative arrays, indirect expansion, `printf -v` — used by statusbot for i18n and other features |
 | Mozilla CA bundle | `/system/etc/cacert.pem` | [curl.se/ca/cacert.pem](https://curl.se/ca/cacert.pem) | TLS root certificates for HTTPS |
 
 ## Why this is useful
@@ -45,6 +46,10 @@ wget --no-check-certificate https://example.com/file.zip
 # JSON parsing
 curl -s https://api.github.com/repos/foo/bar | jq '.stargazers_count'
 
+# bash features (statusbot uses these for i18n)
+bash -c 'declare -A m; m[key]="value"; echo "${m[key]}"'
+bash -c 'var=MSG_HELLO; MSG_HELLO=hi; echo "${!var}"'
+
 # AT command to cellular modem (sendat -c <AT-cmd> -n <slot 0|1>)
 sendat -c "AT+CSQ" -n 0          # signal quality
 sendat -c "AT+CGSN" -n 0         # read IMEI
@@ -66,6 +71,8 @@ This module only **adds** new files to `/system/bin` and `/system/etc`; no exist
 │   │   ├── curl
 │   │   ├── jq
 │   │   ├── busybox
+│   │   ├── bash                  # static 5.2 (~2.3 MB)
+│   │   ├── sendat
 │   │   └── wget -> busybox       # busybox detects applet by argv[0]
 │   └── etc/
 │       └── cacert.pem

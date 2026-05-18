@@ -1,7 +1,7 @@
 id=bin-utils
-name=bin-utils (curl wget jq sendat)
-version=v1.1.0
-versionCode=2
+name=bin-utils (curl wget jq sendat bash)
+version=v1.2.0
+versionCode=3
 author=kaandikec
-description=Static aarch64 binaries: curl, wget (via busybox), jq, sendat (UFI's AT runner) + CA bundle
+description=Static aarch64 binaries: curl, wget (busybox), jq, sendat, bash 5.2 (static) + CA bundle
 updateJson=https://raw.githubusercontent.com/dikeckaan/magisk-zte-f50-bin-utils/main/update.json
