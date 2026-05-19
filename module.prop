@@ -1,7 +1,7 @@
 id=bin-utils
-name=bin-utils (curl wget jq sendat bash)
-version=v1.2.0
-versionCode=3
+name=bin-utils (curl wget jq sendat bash + common.sh)
+version=v1.3.0
+versionCode=4
 author=kaandikec
-description=Static aarch64 binaries: curl, wget (busybox), jq, sendat, bash 5.2 (static) + CA bundle
+description=Static aarch64 binaries: curl, wget (busybox), jq, sendat, bash 5.2 (static) + CA bundle + lib/common.sh shared helpers (log_line, log_rotate, find_bash, find_ca_bundle, wait_for_file, wait_for_iface, ensure_iptables_redirect, supervisor_loop).
 updateJson=https://raw.githubusercontent.com/dikeckaan/magisk-zte-f50-bin-utils/main/update.json
