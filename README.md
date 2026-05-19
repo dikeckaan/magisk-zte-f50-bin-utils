@@ -13,10 +13,26 @@ Common CLI tools for Android arm64 devices — packaged as a Magisk module.
 | `sendat` | `/system/bin/sendat` | UFI-TOOLS' [send_at.go](https://github.com/kanoqwq/UFI-TOOLS/blob/http-server-version/app/src/main/assets/shell/send_at.go) — UPX-packed static aarch64 | Send AT commands to the cellular modem |
 | `bash` 5.2.015 | `/system/bin/bash` | [robxu9/bash-static](https://github.com/robxu9/bash-static) (musl static) | Modern shell with associative arrays, indirect expansion, `printf -v` — used by statusbot for i18n and other features |
 | Mozilla CA bundle | `/system/etc/cacert.pem` | [curl.se/ca/cacert.pem](https://curl.se/ca/cacert.pem) | TLS root certificates for HTTPS |
+| `lib/common.sh` (v1.3.0+) | `/data/adb/modules/bin-utils/lib/common.sh` | this repo | POSIX-sh helpers for service.sh files — `log_line`, `log_rotate`, `find_bash`, `find_ca_bundle`, `wait_for_file`, `wait_for_iface`, `ensure_iptables_redirect`, `supervisor_loop` |
 
 ## Why this is useful
 
 Android's `/system/bin` ships with toybox which omits `curl`, `wget`, and `jq`. This module fills that gap with proven static builds so shell scripts and other Magisk modules can do HTTPS requests and JSON parsing without bundling their own binaries.
+
+Since v1.3.0 it also ships `lib/common.sh`, a small library of shared
+POSIX-sh helpers (log rotation, file/interface waits, bash + CA bundle
+location, idempotent iptables-redirect installation). Every other module
+in the [ZTE F50 ecosystem](https://github.com/dikeckaan/f50-magisk-modules)
+sources it from `service.sh`, which removed ~70 lines of copy-pasted
+boilerplate across 5 modules.
+
+```sh
+# In any other module's service.sh:
+. /data/adb/modules/bin-utils/lib/common.sh
+log_line "started"      # writes [timestamp] to $LOG, mkdirs parent
+log_rotate 524288       # mv $LOG -> $LOG.1 if > 512 KB
+BASH=$(find_bash)       # echo path to a static bash 5
+```
 
 ## Requirements
 
